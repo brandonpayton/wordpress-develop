@@ -573,7 +573,7 @@ final class WP_Customize_Nav_Menus {
 		$this->manager->add_section( 'menu_locations', array(
 			'title'       => __( 'Menu Locations' ),
 			'panel'       => 'nav_menus',
-			'priority'    => 5,
+			'priority'    => 300,
 			'description' => $description,
 		) );
 
@@ -670,7 +670,7 @@ final class WP_Customize_Nav_Menus {
 		$this->manager->add_section( new WP_Customize_New_Menu_Section( $this->manager, 'add_menu', array(
 			'title'    => __( 'Add a Menu' ),
 			'panel'    => 'nav_menus',
-			'priority' => 999,
+			'priority' => 200,
 		) ) );
 
 		$this->manager->add_control( 'new_menu_name', array(
