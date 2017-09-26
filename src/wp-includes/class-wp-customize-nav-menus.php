@@ -565,17 +565,20 @@ final class WP_Customize_Nav_Menus {
 			/* translators: %s: number of menu locations */
 			$description = '<p>' . sprintf( _n( 'Your theme can display menus in %s location. Select which menu you would like to use.', 'Your theme can display menus in %s locations. Select which menu appears in each location.', $num_locations ), number_format_i18n( $num_locations ) ) . '</p>';
 		}
+
 		if ( current_theme_supports( 'widgets' ) ) {
 			/* translators: URL to the widgets panel of the customizer */
 			$description .= '<p>' . sprintf( __( 'If your theme has widget areas, you can also add menus there. Visit the <a href="%s">Widgets panel</a> and add a &#8220;Custom Menu widget&#8221; to display a menu in a sidebar or footer.' ), "javascript:wp.customize.panel( 'widgets' ).focus();" ) . '</p>';
 		}
 
-		$this->manager->add_section( 'menu_locations', array(
-			'title'       => __( 'Menu Locations' ),
-			'panel'       => 'nav_menus',
-			'priority'    => 300,
-			'description' => $description,
-		) );
+		$this->manager->register_section_type( 'WP_Customize_Nav_Menu_Locations_Section' );
+		$this->manager->add_section( new WP_Customize_Nav_Menu_Locations_Section( $this->manager, 'menu_locations', array(
+			'title'       	=> __( 'View All Locations' ),
+			'panel'       	=> 'nav_menus',
+			'priority'    	=> 30,
+			'description' 	=> $description,
+			'num_locations' => $num_locations,
+		) ) );
 
 		$choices = array( '0' => __( '&mdash; Select &mdash;' ) );
 		foreach ( $menus as $menu ) {
@@ -670,7 +673,7 @@ final class WP_Customize_Nav_Menus {
 		$this->manager->add_section( new WP_Customize_New_Menu_Section( $this->manager, 'add_menu', array(
 			'title'    => __( 'Add a Menu' ),
 			'panel'    => 'nav_menus',
-			'priority' => 200,
+			'priority' => 20,
 		) ) );
 
 		$this->manager->add_control( 'new_menu_name', array(

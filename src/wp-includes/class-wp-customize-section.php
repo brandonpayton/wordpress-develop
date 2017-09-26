@@ -339,10 +339,7 @@ class WP_Customize_Section {
 	protected function render_template() {
 		?>
 		<li id="accordion-section-{{ data.id }}" class="accordion-section control-section control-section-{{ data.type }}">
-			<h3 class="accordion-section-title" tabindex="0">
-				{{ data.title }}
-				<span class="screen-reader-text"><?php _e( 'Press return or enter to open this section' ); ?></span>
-			</h3>
+			<?php $this->title_template(); ?>
 			<ul class="accordion-section-content">
 				<li class="customize-section-description-container section-meta <# if ( data.description_hidden ) { #>customize-info<# } #>">
 					<div class="customize-section-title">
@@ -373,6 +370,23 @@ class WP_Customize_Section {
 				</li>
 			</ul>
 		</li>
+		<?php
+	}
+
+	/**
+	 * An Underscore (JS) template for this section's title.
+	 *
+	 * Class variables for this control class are available in the `data` JS object;
+	 * export custom variables by overriding WP_Customize_Section::json().
+	 *
+	 * @return void
+	 */
+	protected function title_template() {
+		?>
+		<h3 class="accordion-section-title" tabindex="0">
+			{{ data.title }}
+			<span class="screen-reader-text"><?php _e( 'Press return or enter to open this section' ); ?></span>
+		</h3>
 		<?php
 	}
 }

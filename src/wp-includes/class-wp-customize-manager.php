@@ -323,6 +323,7 @@ final class WP_Customize_Manager {
 		require_once( ABSPATH . WPINC . '/customize/class-wp-customize-themes-panel.php' );
 		require_once( ABSPATH . WPINC . '/customize/class-wp-customize-themes-section.php' );
 		require_once( ABSPATH . WPINC . '/customize/class-wp-customize-sidebar-section.php' );
+		require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-locations-section.php' );
 		require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-section.php' );
 		require_once( ABSPATH . WPINC . '/customize/class-wp-customize-new-menu-section.php' );
 
@@ -4238,6 +4239,7 @@ final class WP_Customize_Manager {
 		$this->register_section_type( 'WP_Customize_Section' );
 		$this->register_section_type( 'WP_Customize_Sidebar_Section' );
 		$this->register_section_type( 'WP_Customize_Themes_Section' );
+		$this->register_section_type( 'WP_Customize_Nav_Menu_Locations_Section' );
 		$this->register_control_type( 'WP_Customize_Color_Control' );
 		$this->register_control_type( 'WP_Customize_Media_Control' );
 		$this->register_control_type( 'WP_Customize_Upload_Control' );
