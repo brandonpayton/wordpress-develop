@@ -2154,7 +2154,7 @@
 	 * Customizer control for deleting a nav menu.
 	 *
 	 * @constructor
-	 * @var wp.customize.Control
+	 * @augments wp.customize.Control
 	 */
 	api.Menus.MenuDeleteControl = api.Control.extend({
 		/**
