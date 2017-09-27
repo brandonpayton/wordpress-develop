@@ -397,6 +397,9 @@ require_once( ABSPATH . WPINC . '/customize/class-wp-customize-themes-section.ph
 /** WP_Customize_Sidebar_Section class */
 require_once( ABSPATH . WPINC . '/customize/class-wp-customize-sidebar-section.php' );
 
+/** WP_Customize_Nav_Menu_Locations_Section class */
+require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-locations-section.php' );
+
 /** WP_Customize_Nav_Menu_Section class */
 require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-section.php' );
 
