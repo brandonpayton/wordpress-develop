@@ -539,6 +539,7 @@ final class WP_Customize_Nav_Menus {
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Name_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Auto_Add_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Item_Control' );
+		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Delete_Control' );
 
 		// Create a panel for Menus.
 		$description = '<p>' . __( 'This panel is used for managing navigation menus for content you have already published on your site. You can create menus and add items for existing content such as pages, posts, categories, tags, formats, or custom links.' ) . '</p>';

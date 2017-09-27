@@ -961,7 +961,7 @@
 		},
 
 		populateControls: function() {
-			var section = this, menuNameControlId, menuAutoAddControlId, menuControl, menuNameControl, menuAutoAddControl;
+			var section = this, menuNameControlId, menuAutoAddControlId, menuDeleteControlId, menuControl, menuNameControl, menuAutoAddControl, menuDeleteControl;
 
 			// Add the control for managing the menu name.
 			menuNameControlId = section.id + '[name]';
@@ -1013,6 +1013,23 @@
 				menuAutoAddControl.active.set( true );
 			}
 
+			// Add the control for deleting the menu
+			menuDeleteControlId = section.id + '[delete]';
+			menuDeleteControl = api.control( menuDeleteControlId );
+			if ( ! menuDeleteControl ) {
+				menuDeleteControl = new api.controlConstructor.nav_menu_delete( menuDeleteControlId, {
+					type: 'nav_menu_delete',
+					label: '',
+					section: section.id,
+					priority: 1000,
+					settings: {
+						'default': section.id
+					},
+					menu_id: section.params.menu_id
+				} );
+				api.control.add( menuDeleteControl.id, menuDeleteControl );
+				menuDeleteControl.active.set( true );
+			}
 		},
 
 		/**
@@ -1488,7 +1505,9 @@
 			// Configure delete button.
 			$removeBtn = control.container.find( '.item-delete' );
 
-			$removeBtn.on( 'click', function() {
+			$removeBtn.on( 'click', function(event) {
+				event.preventDefault();
+
 				// Find an adjacent element to add focus to when this menu item goes away
 				var addingItems = true, $adjacentFocusTarget, $next, $prev;
 
@@ -1512,6 +1531,8 @@
 					wp.a11y.speak( api.Menus.data.l10n.itemDeleted );
 					$adjacentFocusTarget.focus(); // keyboard accessibility
 				} );
+
+				control.setting.set( false );
 			} );
 		},
 
@@ -2128,6 +2149,31 @@
 	});
 
 	/**
+	 * wp.customize.Menus.MenuDeleteControl
+	 *
+	 * Customizer control for deleting a nav menu.
+	 *
+	 * @constructor
+	 * @var wp.customize.Control
+	 */
+	api.Menus.MenuDeleteControl = api.Control.extend({
+		/**
+		 * Set up the control.
+		 */
+		ready: function () {
+			var control = this;
+
+			control.container.find( '.button-link-delete' ).on( 'click', function( event ) {
+				event.preventDefault();
+
+				var menuId = control.params.menu_id;
+				var menuControl = api.Menus.getMenuControl( menuId );
+				menuControl.setting.set( false );
+			});
+		}
+	});
+
+	/**
 	 * wp.customize.Menus.MenuControl
 	 *
 	 * Customizer control for menus.
@@ -2235,11 +2281,6 @@
 					});
 				}
 			} );
-
-			control.container.find( '.menu-delete-item .button-link-delete' ).on( 'click', function( event ) {
-				event.preventDefault();
-				control.setting.set( false );
-			});
 		},
 
 		/**
@@ -2788,6 +2829,7 @@
 		nav_menu: api.Menus.MenuControl,
 		nav_menu_name: api.Menus.MenuNameControl,
 		nav_menu_auto_add: api.Menus.MenuAutoAddControl,
+		nav_menu_delete: api.Menus.MenuDeleteControl,
 		new_menu: api.Menus.NewMenuControl
 	});
 
