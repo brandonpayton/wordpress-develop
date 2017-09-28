@@ -771,6 +771,10 @@ body.adding-menu-items #customize-preview iframe {
 	width: 100%;
 }
 
+.assigned-menu-locations-title p {
+	margin: 0 0 8px 0;
+}
+
 li.assigned-to-menu-location .menu-delete-item {
 	display: none;
 }

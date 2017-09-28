@@ -55,8 +55,9 @@ class WP_Customize_Nav_Menu_Control extends WP_Customize_Control {
 		<p class="screen-reader-text" id="reorder-items-desc-{{ data.menu_id }}"><?php _e( 'When in reorder mode, additional controls to reorder menu items will be available in the items list above.' ); ?></p>
 		<?php if ( current_theme_supports( 'menus' ) ) : ?>
 		<ul class="menu-settings">
-			<li class="customize-control">
+			<li class="customize-control assigned-menu-locations-title">
 				<span class="customize-control-title"><?php _e( 'Display Location' ); ?></span>
+				<p><?php _e( 'Here\'s where this menu appears. If you\'d like to change that, pick another location.' ); ?></p>
 			</li>
 
 			<?php foreach ( get_registered_nav_menus() as $location => $description ) : ?>
