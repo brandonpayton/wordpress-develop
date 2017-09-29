@@ -770,6 +770,11 @@ require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-location
 require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-name-control.php' );
 
 /**
+ * WP_Customize_Nav_Menu_Locations_Control class.
+ */
+require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-locations-control.php' );
+
+/**
  * WP_Customize_Nav_Menu_Auto_Add_Control class.
  */
 require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-auto-add-control.php' );

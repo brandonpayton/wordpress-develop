@@ -961,7 +961,7 @@
 		},
 
 		populateControls: function() {
-			var section = this, menuNameControlId, menuAutoAddControlId, menuDeleteControlId, menuControl, menuNameControl, menuAutoAddControl, menuDeleteControl;
+			var section = this, menuNameControlId, menuLocationsControlId, menuAutoAddControlId, menuDeleteControlId, menuControl, menuNameControl, menuLocationsControl, menuAutoAddControl, menuDeleteControl;
 
 			// Add the control for managing the menu name.
 			menuNameControlId = section.id + '[name]';
@@ -970,6 +970,7 @@
 				menuNameControl = new api.controlConstructor.nav_menu_name( menuNameControlId, {
 					type: 'nav_menu_name',
 					label: api.Menus.data.l10n.menuNameLabel,
+					description: 'Time to add some links! Click "Add menu items" to start putting pages, categories, and custom links in your menu. Add as many things as you\'d like.',
 					section: section.id,
 					priority: 0,
 					settings: {
@@ -996,6 +997,23 @@
 				menuControl.active.set( true );
 			}
 
+			// Add the menu locations control.
+			menuLocationsControlId = section.id + '[locations]'
+			menuLocationsControl = api.control( menuLocationsControlId );
+			if ( ! menuLocationsControl ) {
+				menuLocationsControl = new api.controlConstructor.nav_menu_locations( menuLocationsControlId, {
+					type: 'nav_menu_locations',
+					section: section.id,
+					priority: 999,
+					settings: {
+						'default': section.id
+					},
+					menu_id: section.params.menu_id
+				} );
+				api.control.add( menuLocationsControl.id, menuLocationsControl );
+				menuControl.active.set( true );
+			}
+
 			// Add the control for managing the menu auto_add.
 			menuAutoAddControlId = section.id + '[auto_add]';
 			menuAutoAddControl = api.control( menuAutoAddControlId );
@@ -1004,7 +1022,7 @@
 					type: 'nav_menu_auto_add',
 					label: '',
 					section: section.id,
-					priority: 999,
+					priority: 1000,
 					settings: {
 						'default': section.id
 					}
@@ -1021,7 +1039,7 @@
 					type: 'nav_menu_delete',
 					label: '',
 					section: section.id,
-					priority: 1000,
+					priority: 1001,
 					settings: {
 						'default': section.id
 					},
@@ -2097,6 +2115,51 @@
 	});
 
 	/**
+	 * wp.customize.Menus.MenuLocationsControl
+	 *
+	 * Customizer control for a nav menu's locations.
+	 *
+	 * @constructor
+	 * @augments wp.customize.Control
+	 */
+	api.Menus.MenuLocationsControl = api.Control.extend({
+		ready: function () {
+			var control = this;
+
+			control.container.find( '.assigned-menu-location' ).each(function() {
+				var container = $( this ),
+					checkbox = container.find( 'input[type=checkbox]' ),
+					element,
+					updateSelectedMenuLabel,
+					navMenuLocationSetting = api( 'nav_menu_locations[' + checkbox.data( 'location-id' ) + ']' );
+
+				updateSelectedMenuLabel = function( selectedMenuId ) {
+					var menuSetting = api( 'nav_menu[' + String( selectedMenuId ) + ']' );
+					if ( ! selectedMenuId || ! menuSetting || ! menuSetting() ) {
+						container.find( '.theme-location-set' ).hide();
+					} else {
+						container.find( '.theme-location-set' ).show().find( 'span' ).text( displayNavMenuName( menuSetting().name ) );
+					}
+				};
+
+				element = new api.Element( checkbox );
+				element.set( navMenuLocationSetting.get() === control.params.menu_id );
+
+				checkbox.on( 'change', function() {
+					// Note: We can't use element.bind( function( checked ){ ... } ) here because it will trigger a change as well.
+					navMenuLocationSetting.set( this.checked ? control.params.menu_id : 0 );
+				} );
+
+				navMenuLocationSetting.bind(function( selectedMenuId ) {
+					element.set( selectedMenuId === control.params.menu_id );
+					updateSelectedMenuLabel( selectedMenuId );
+				});
+				updateSelectedMenuLabel( navMenuLocationSetting.get() );
+			});
+		}
+	});
+
+	/**
 	 * wp.customize.Menus.MenuAutoAddControl
 	 *
 	 * Customizer control for a nav menu's auto add.
@@ -2226,7 +2289,6 @@
 			} );
 
 			this._setupAddition();
-			this._setupLocations();
 			this._setupTitle();
 
 			// Add menu to Custom Menu widgets.
@@ -2432,43 +2494,6 @@
 			widgetTemplate.find( '.nav-menu-widget-form-controls:first' ).toggle( 0 !== navMenuCount );
 			widgetTemplate.find( '.nav-menu-widget-no-menus-message:first' ).toggle( 0 === navMenuCount );
 			widgetTemplate.find( 'option[value=' + String( menuId ) + ']' ).remove();
-		},
-
-		// Setup theme location checkboxes.
-		_setupLocations: function() {
-			var control = this;
-
-			control.container.find( '.assigned-menu-location' ).each(function() {
-				var container = $( this ),
-					checkbox = container.find( 'input[type=checkbox]' ),
-					element,
-					updateSelectedMenuLabel,
-					navMenuLocationSetting = api( 'nav_menu_locations[' + checkbox.data( 'location-id' ) + ']' );
-
-				updateSelectedMenuLabel = function( selectedMenuId ) {
-					var menuSetting = api( 'nav_menu[' + String( selectedMenuId ) + ']' );
-					if ( ! selectedMenuId || ! menuSetting || ! menuSetting() ) {
-						container.find( '.theme-location-set' ).hide();
-					} else {
-						container.find( '.theme-location-set' ).show().find( 'span' ).text( displayNavMenuName( menuSetting().name ) );
-					}
-				};
-
-				element = new api.Element( checkbox );
-				element.set( navMenuLocationSetting.get() === control.params.menu_id );
-
-				checkbox.on( 'change', function() {
-					// Note: We can't use element.bind( function( checked ){ ... } ) here because it will trigger a change as well.
-					navMenuLocationSetting.set( this.checked ? control.params.menu_id : 0 );
-				} );
-
-				navMenuLocationSetting.bind(function( selectedMenuId ) {
-					element.set( selectedMenuId === control.params.menu_id );
-					updateSelectedMenuLabel( selectedMenuId );
-				});
-				updateSelectedMenuLabel( navMenuLocationSetting.get() );
-
-			});
 		},
 
 		/**
@@ -2828,6 +2853,7 @@
 		nav_menu_item: api.Menus.MenuItemControl,
 		nav_menu: api.Menus.MenuControl,
 		nav_menu_name: api.Menus.MenuNameControl,
+		nav_menu_locations: api.Menus.MenuLocationsControl,
 		nav_menu_auto_add: api.Menus.MenuAutoAddControl,
 		nav_menu_delete: api.Menus.MenuDeleteControl,
 		new_menu: api.Menus.NewMenuControl
