@@ -4239,7 +4239,6 @@ final class WP_Customize_Manager {
 		$this->register_section_type( 'WP_Customize_Section' );
 		$this->register_section_type( 'WP_Customize_Sidebar_Section' );
 		$this->register_section_type( 'WP_Customize_Themes_Section' );
-		$this->register_section_type( 'WP_Customize_Nav_Menu_Locations_Section' );
 		$this->register_control_type( 'WP_Customize_Color_Control' );
 		$this->register_control_type( 'WP_Customize_Media_Control' );
 		$this->register_control_type( 'WP_Customize_Upload_Control' );
