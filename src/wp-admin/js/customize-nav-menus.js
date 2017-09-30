@@ -1171,15 +1171,11 @@
 						description: api.Menus.data.l10n.newMenuNameDescription,
 						active: true,
 						section: section.id,
-						priority: 0,
-						settings: {
-							'default': section.id
-						}
+						priority: 0
 					}
 				} );
 				api.control.add( menuNameControl.id, menuNameControl );
 				menuNameControl.active.set( true );
-				window.bp1 = menuNameControl;
 			}
 
 			menuLocationsControlId = section.id + '[locations]';
@@ -1192,15 +1188,11 @@
 						section: section.id,
 						priority: 1,
 						active: true,
-						settings: {
-							'default': section.id
-						},
 						menu_id: ''
 					}
 				} );
 				api.control.add( menuLocationsControlId, menuLocationsControl );
 				menuLocationsControl.active.set( true );
-				window.bp2 = menuLocationsControl;
 			}
 		},
 	});
@@ -2089,45 +2081,47 @@
 	api.Menus.MenuNameControl = api.Control.extend({
 
 		ready: function() {
-			var control = this,
-				settingValue = control.setting();
+			var control = this;
 
-			/*
-			 * Since the control is not registered in PHP, we need to prevent the
-			 * preview's sending of the activeControls to result in this control
-			 * being deactivated.
-			 */
-			control.active.validate = function() {
-				var value, section = api.section( control.section() );
-				if ( section ) {
-					value = section.active();
-				} else {
-					value = false;
-				}
-				return value;
-			};
-
-			control.nameElement = new api.Element( control.container.find( '.menu-name-field' ) );
-
-			control.nameElement.bind(function( value ) {
+			if ( control.setting ) {
 				var settingValue = control.setting();
-				if ( settingValue && settingValue.name !== value ) {
-					settingValue = _.clone( settingValue );
-					settingValue.name = value;
-					control.setting.set( settingValue );
+
+				/*
+				* Since the control is not registered in PHP, we need to prevent the
+				* preview's sending of the activeControls to result in this control
+				* being deactivated.
+				*/
+				control.active.validate = function() {
+					var value, section = api.section( control.section() );
+					if ( section ) {
+						value = section.active();
+					} else {
+						value = false;
+					}
+					return value;
+				};
+
+				control.nameElement = new api.Element( control.container.find( '.menu-name-field' ) );
+
+				control.nameElement.bind(function( value ) {
+					var settingValue = control.setting();
+					if ( settingValue && settingValue.name !== value ) {
+						settingValue = _.clone( settingValue );
+						settingValue.name = value;
+						control.setting.set( settingValue );
+					}
+				});
+				if ( settingValue ) {
+					control.nameElement.set( settingValue.name );
 				}
-			});
-			if ( settingValue ) {
-				control.nameElement.set( settingValue.name );
+
+				control.setting.bind(function( object ) {
+					if ( object ) {
+						control.nameElement.set( object.name );
+					}
+				});
 			}
-
-			control.setting.bind(function( object ) {
-				if ( object ) {
-					control.nameElement.set( object.name );
-				}
-			});
 		}
-
 	});
 
 	/**
