@@ -29,16 +29,15 @@ class WP_Customize_New_Menu_Section extends WP_Customize_Section {
 	/**
 	 * Render the section, and the controls that have been added to it.
 	 *
-	 * @since 4.3.0
+	 * @since 4.9.0
 	 */
-	protected function render() {
+	protected function title_template() {
 		?>
-		<li id="accordion-section-<?php echo esc_attr( $this->id ); ?>" class="accordion-section-new-menu">
-			<button type="button" class="button add-new-menu-item add-menu-toggle" aria-expanded="false">
-				<?php echo esc_html( $this->title ); ?>
+		<h3>
+			<button type="button" class="button customize-add-menu-button">
+				{{ data.title }}
 			</button>
-			<ul class="new-menu-section-content"></ul>
-		</li>
+		</h3>
 		<?php
 	}
 }

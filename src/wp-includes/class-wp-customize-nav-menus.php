@@ -400,34 +400,35 @@ final class WP_Customize_Nav_Menus {
 			'allMenus'             => wp_get_nav_menus(),
 			'itemTypes'            => $this->available_item_types(),
 			'l10n'                 => array(
-				'untitled'          => _x( '(no label)', 'missing menu item navigation label' ),
-				'unnamed'           => _x( '(unnamed)', 'Missing menu name.' ),
-				'custom_label'      => __( 'Custom Link' ),
-				'page_label'        => get_post_type_object( 'page' )->labels->singular_name,
-				/* translators: %s: menu location */
-				'menuLocation'      => _x( '(Currently set to: %s)', 'menu' ),
-				'menuNameLabel'     => __( 'Menu Name' ),
-				'itemAdded'         => __( 'Menu item added' ),
-				'itemDeleted'       => __( 'Menu item deleted' ),
-				'menuAdded'         => __( 'Menu created' ),
-				'menuDeleted'       => __( 'Menu deleted' ),
-				'movedUp'           => __( 'Menu item moved up' ),
-				'movedDown'         => __( 'Menu item moved down' ),
-				'movedLeft'         => __( 'Menu item moved out of submenu' ),
-				'movedRight'        => __( 'Menu item is now a sub-item' ),
+				'untitled'               => _x( '(no label)', 'missing menu item navigation label' ),
+				'unnamed'                => _x( '(unnamed)', 'Missing menu name.' ),
+				'custom_label'           => __( 'Custom Link' ),
+				'page_label'             => get_post_type_object( 'page' )->labels->singular_name,
+				/* translators: %s:      menu location */
+				'menuLocation'           => _x( '(Currently set to: %s)', 'menu' ),
+				'menuNameLabel'          => __( 'Menu Name' ),
+				'newMenuNameDescription' => __( 'If your theme has multiple menus, giving them clear names will help you manage them.' ),
+				'itemAdded'              => __( 'Menu item added' ),
+				'itemDeleted'            => __( 'Menu item deleted' ),
+				'menuAdded'              => __( 'Menu created' ),
+				'menuDeleted'            => __( 'Menu deleted' ),
+				'movedUp'                => __( 'Menu item moved up' ),
+				'movedDown'              => __( 'Menu item moved down' ),
+				'movedLeft'              => __( 'Menu item moved out of submenu' ),
+				'movedRight'             => __( 'Menu item is now a sub-item' ),
 				/* translators: &#9656; is the unicode right-pointing triangle, and %s is the section title in the Customizer */
-				'customizingMenus'  => sprintf( __( 'Customizing &#9656; %s' ), esc_html( $this->manager->get_panel( 'nav_menus' )->title ) ),
+				'customizingMenus'       => sprintf( __( 'Customizing &#9656; %s' ), esc_html( $this->manager->get_panel( 'nav_menus' )->title ) ),
 				/* translators: %s: title of menu item which is invalid */
-				'invalidTitleTpl'   => __( '%s (Invalid)' ),
+				'invalidTitleTpl'        => __( '%s (Invalid)' ),
 				/* translators: %s: title of menu item in draft status */
-				'pendingTitleTpl'   => __( '%s (Pending)' ),
-				'itemsFound'        => __( 'Number of items found: %d' ),
-				'itemsFoundMore'    => __( 'Additional items found: %d' ),
-				'itemsLoadingMore'  => __( 'Loading more results... please wait.' ),
-				'reorderModeOn'     => __( 'Reorder mode enabled' ),
-				'reorderModeOff'    => __( 'Reorder mode closed' ),
-				'reorderLabelOn'    => esc_attr__( 'Reorder menu items' ),
-				'reorderLabelOff'   => esc_attr__( 'Close reorder mode' ),
+				'pendingTitleTpl'        => __( '%s (Pending)' ),
+				'itemsFound'             => __( 'Number of items found: %d' ),
+				'itemsFoundMore'         => __( 'Additional items found: %d' ),
+				'itemsLoadingMore'       => __( 'Loading more results... please wait.' ),
+				'reorderModeOn'          => __( 'Reorder mode enabled' ),
+				'reorderModeOff'         => __( 'Reorder mode closed' ),
+				'reorderLabelOn'         => esc_attr__( 'Reorder menu items' ),
+				'reorderLabelOff'        => esc_attr__( 'Close reorder mode' ),
 			),
 			'settingTransport'     => 'postMessage',
 			'phpIntMax'            => PHP_INT_MAX,
@@ -672,25 +673,11 @@ final class WP_Customize_Nav_Menus {
 		}
 
 		// Add the add-new-menu section and controls.
+		$this->manager->register_section_type( 'WP_Customize_New_Menu_Section' );
 		$this->manager->add_section( new WP_Customize_New_Menu_Section( $this->manager, 'add_menu', array(
-			'title'    => __( 'Add a Menu' ),
+			'title'    => __( 'Create New Menu' ),
 			'panel'    => 'nav_menus',
 			'priority' => 20,
-		) ) );
-
-		$this->manager->add_control( 'new_menu_name', array(
-			'label'       => __( 'New menu name' ),
-			'section'     => 'add_menu',
-			'type'        => 'text',
-			'settings'    => array(),
-			'input_attrs' => array(
-				'class'       => 'menu-name-field',
-			),
-		) );
-
-		$this->manager->add_control( new WP_Customize_New_Menu_Control( $this->manager, 'create_new_menu', array(
-			'section'  => 'add_menu',
-			'settings' => array(),
 		) ) );
 
 		$this->manager->add_setting( new WP_Customize_Filter_Setting( $this->manager, 'nav_menus_created_posts', array(

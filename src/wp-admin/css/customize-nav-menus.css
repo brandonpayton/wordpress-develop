@@ -723,27 +723,16 @@ body.adding-menu-items #customize-preview iframe {
 /* @todo update selector */
 #accordion-section-add_menu {
 	margin: 15px 12px;
-	overflow: hidden;
+	text-align: right;
 }
 
-.new-menu-section-content {
-	display: none;
-	padding: 15px 0 0 0;
-	clear: both;
+#accordion-section-add_menu h3,
+#accordion-section-add_menu button.customize-add-menu-button {
+	margin: 0;
 }
 
-/* @todo update selector */
-#accordion-section-add_menu .accordion-section-title {
-	padding-left: 45px;
-}
-
-/* @todo update selector */
-#accordion-section-add_menu .accordion-section-title:before {
-	font: normal 20px/1 dashicons;
-	position: absolute;
-	top: 12px;
-	left: 14px;
-	content: "\f132";
+#accordion-section-add_menu button.customize-add-menu-button {
+	font-weight: normal;
 }
 
 #create-new-menu-submit {
