@@ -970,7 +970,6 @@
 				menuNameControl = new api.controlConstructor.nav_menu_name( menuNameControlId, {
 					type: 'nav_menu_name',
 					label: api.Menus.data.l10n.menuNameLabel,
-					description: 'Time to add some links! Click "Add menu items" to start putting pages, categories, and custom links in your menu. Add as many things as you\'d like.',
 					section: section.id,
 					priority: 0,
 					settings: {
@@ -1134,7 +1133,6 @@
 	 * @augments wp.customize.Section
 	 */
 	api.Menus.NewMenuSection = api.Section.extend({
-
 		/**
 		 * Add behaviors for the accordion section.
 		 *
@@ -1142,51 +1140,69 @@
 		 */
 		attachEvents: function() {
 			var section = this;
-			this.container.on( 'click', '.add-menu-toggle', function() {
-				if ( section.expanded() ) {
-					section.collapse();
-				} else {
-					section.expand();
-				}
+
+			// We have to manually handle section expanded because we do not
+			// apply the `accordion-section-title` class to this button-driven section.
+			this.container.on( 'click', '.customize-add-menu-button', function() {
+				section.expand();
 			});
+
+			api.Section.prototype.attachEvents.apply( this, arguments );
 		},
 
 		/**
-		 * Update UI to reflect expanded state.
-		 *
-		 * @since 4.1.0
-		 *
-		 * @param {Boolean} expanded
+		 * Set up the control.
 		 */
-		onChangeExpanded: function( expanded ) {
-			var section = this,
-				button = section.container.find( '.add-menu-toggle' ),
-				content = section.contentContainer,
-				customizer = section.headContainer.closest( '.wp-full-overlay-sidebar-content' );
-			if ( expanded ) {
-				button.addClass( 'open' );
-				button.attr( 'aria-expanded', 'true' );
-				content.slideDown( 'fast', function() {
-					customizer.scrollTop( customizer.height() );
-				});
-			} else {
-				button.removeClass( 'open' );
-				button.attr( 'aria-expanded', 'false' );
-				content.slideUp( 'fast' );
-				content.find( '.menu-name-field' ).removeClass( 'invalid' );
+		ready: function() {
+			this.populateControls();
+		},
+
+		populateControls: function() {
+			var section = this, menuNameControlId, menuNameControl, menuLocationsControlId, menuLocationsControl;
+
+			menuNameControlId = section.id + '[name]';
+			menuNameControl = api.control( menuNameControlId );
+			if ( ! menuNameControl ) {
+				menuNameControl = new api.controlConstructor.nav_menu_name( menuNameControlId, {
+					params: {
+						type: 'nav_menu_name',
+						content: '<li id="customize-control-' + section.id.replace( '[', '-' ).replace( ']', '' ) + '-name" class="customize-control customize-control-nav_menu_name"></li>', // @todo core should do this for us; see #30741
+						label: api.Menus.data.l10n.menuNameLabel,
+						description: api.Menus.data.l10n.newMenuNameDescription,
+						active: true,
+						section: section.id,
+						priority: 0,
+						settings: {
+							'default': section.id
+						}
+					}
+				} );
+				api.control.add( menuNameControl.id, menuNameControl );
+				menuNameControl.active.set( true );
+				window.bp1 = menuNameControl;
+			}
+
+			menuLocationsControlId = section.id + '[locations]';
+			menuLocationsControl = api.control( menuLocationsControlId );
+			if ( ! menuLocationsControl ) {
+				menuLocationsControl = new api.controlConstructor.nav_menu_locations( menuLocationsControlId, {
+					params: {
+						type: 'nav_menu_locations',
+						content: '<li id="customize-control-' + section.id.replace( '[', '-' ).replace( ']', '' ) + '-locations" class="customize-control customize-control-nav_menu_locations"></li>', // @todo core should do this for us; see #30741
+						section: section.id,
+						priority: 1,
+						active: true,
+						settings: {
+							'default': section.id
+						},
+						menu_id: ''
+					}
+				} );
+				api.control.add( menuLocationsControlId, menuLocationsControl );
+				menuLocationsControl.active.set( true );
+				window.bp2 = menuLocationsControl;
 			}
 		},
-
-		/**
-		 * Find the content element.
-		 *
-		 * @since 4.7.0
-		 *
-		 * @returns {jQuery} Content UL element.
-		 */
-		getContent: function() {
-			return this.container.find( 'ul:first' );
-		}
 	});
 
 	/**
@@ -2760,12 +2776,57 @@
 	 * @augments wp.customize.Control
 	 */
 	api.Menus.NewMenuControl = api.Control.extend({
-		/**
-		 * Set up the control.
-		 */
-		ready: function() {
-			this._bindHandlers();
-		},
+		// /**
+		//  * Set up the control.
+		//  */
+		// ready: function() {
+		// 	this.populateControls();
+		// },
+
+		// populateControls: function() {
+		// 	var section = this, menuNameControlId, menuNameControl, menuLocationsControlId, menuLocationsControl;
+
+		// 	menuNameControlId = section.id + '[name]';
+		// 	menuNameControl = api.control( menuNameControlId );
+		// 	if ( ! menuNameControl ) {
+		// 		menuNameControl = api.controlConstructor.nav_menu_name( menuNameControlId, {
+		// 			params: {
+		// 				type: 'nav_menu_name',
+		// 				content: '<li id="customize-control-' + section.id.replace( '[', '-' ).replace( ']', '' ) + '-name" class="customize-control customize-control-nav_menu_name"></li>', // @todo core should do this for us; see #30741
+		// 				label: api.Menus.data.l10n.menuNameLabel,
+		// 				description: api.Menus.data.l10n.newMenuNameDescription,
+		// 				active: true,
+		// 				section: section.id,
+		// 				priority: 0,
+		// 				settings: {
+		// 					'default': section.id
+		// 				}
+		// 			}
+		// 		} );
+		// 		api.control.add( menuNameControl.id, menuNameControl );
+		// 		menuNameControl.active.set( true );
+		// 	}
+
+		// 	menuLocationsControlId = section.id + '[locations]';
+		// 	menuLocationsControl = api.control( menuLocationsControlId );
+		// 	if ( ! menuLocationsControl ) {
+		// 		menuLocationsControl = api.controlConstructor.nav_menu_locations( menuLocationsControlId, {
+		// 			params: {
+		// 				type: 'nav_menu_locations',
+		// 				content: '<li id="customize-control-' + section.id.replace( '[', '-' ).replace( ']', '' ) + '-locations" class="customize-control customize-control-nav_menu_locations"></li>', // @todo core should do this for us; see #30741
+		// 				section: section.id,
+		// 				priority: 1,
+		// 				active: true,
+		// 				settings: {
+		// 					'default': section.id
+		// 				},
+		// 				menu_id: ''
+		// 			}
+		// 		} );
+		// 		api.control.add( menuLocationsControlId, menuLocationsControl );
+		// 		menuLocationsControl.active.set( true );
+		// 	}
+		// },
 
 		_bindHandlers: function() {
 			var self = this,
