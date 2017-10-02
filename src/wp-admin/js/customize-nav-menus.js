@@ -2177,21 +2177,6 @@
 			if ( control.setting ) {
 				var settingValue = control.setting();
 
-				/*
-				* Since the control is not registered in PHP, we need to prevent the
-				* preview's sending of the activeControls to result in this control
-				* being deactivated.
-				*/
-				control.active.validate = function() {
-					var value, section = api.section( control.section() );
-					if ( section ) {
-						value = section.active();
-					} else {
-						value = false;
-					}
-					return value;
-				};
-
 				control.nameElement = new api.Element( control.container.find( '.menu-name-field' ) );
 
 				control.nameElement.bind(function( value ) {
