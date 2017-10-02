@@ -2408,6 +2408,11 @@
 					select.append( new Option( name, menuId ) );
 				}
 			}
+
+			// Wait until we know existing menu items have been added
+			api.bind( 'ready', function () {
+				control.updateInvitationVisibility();
+			} );
 		},
 
 		/**
@@ -2763,6 +2768,7 @@
 				currentAbsolutePosition: 0
 			} );
 
+			menuControl.updateInvitationVisibility( menuItemControls );
 			menuControl.container.find( '.reorder-toggle' ).toggle( menuItemControls.length > 1 );
 		},
 
@@ -2837,6 +2843,12 @@
 			wp.a11y.speak( api.Menus.data.l10n.itemAdded );
 
 			return menuItemControl;
+		},
+
+		updateInvitationVisibility: function ( optionalMenuItemControls ) {
+			var menuItemControls = optionalMenuItemControls || this.getMenuItemControls();
+
+			this.container.find( '.new-menu-item-invitation' ).toggle( menuItemControls.length === 0 );
 		}
 	} );
 

@@ -36,7 +36,7 @@ class WP_Customize_Nav_Menu_Control extends WP_Customize_Control {
 	 */
 	public function content_template() {
 		?>
-		<p class=""><?php _e( 'Time to add some links! Click "Add menu items" to start putting pages, categories, and custom links in your menu. Add as many things as you\'d like.' ); ?></p>
+		<p class="new-menu-item-invitation"><?php _e( 'Time to add some links! Click "Add menu items" to start putting pages, categories, and custom links in your menu. Add as many things as you\'d like.' ); ?></p>
 		<button type="button" class="button add-new-menu-item" aria-label="<?php esc_attr_e( 'Add or remove menu items' ); ?>" aria-expanded="false" aria-controls="available-menu-items">
 			<?php _e( 'Add Items' ); ?>
 		</button>
