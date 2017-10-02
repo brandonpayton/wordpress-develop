@@ -534,6 +534,10 @@ final class WP_Customize_Nav_Menus {
 			}
 		}
 
+		// Require JS-rendered section types.
+		$this->manager->register_section_type( 'WP_Customize_Nav_Menu_Locations_Section' );
+		$this->manager->register_section_type( 'WP_Customize_New_Menu_Section' );
+
 		// Require JS-rendered control types.
 		$this->manager->register_panel_type( 'WP_Customize_Nav_Menus_Panel' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Control' );
@@ -542,6 +546,7 @@ final class WP_Customize_Nav_Menus {
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Auto_Add_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Item_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Delete_Control' );
+		$this->manager->register_control_type( 'WP_Customize_New_Menu_Submit_Control' );
 
 		// Create a panel for Menus.
 		$description = '<p>' . __( 'This panel is used for managing navigation menus for content you have already published on your site. You can create menus and add items for existing content such as pages, posts, categories, tags, formats, or custom links.' ) . '</p>';
@@ -574,7 +579,6 @@ final class WP_Customize_Nav_Menus {
 			$description .= '<p>' . sprintf( __( 'If your theme has widget areas, you can also add menus there. Visit the <a href="%s">Widgets panel</a> and add a &#8220;Custom Menu widget&#8221; to display a menu in a sidebar or footer.' ), "javascript:wp.customize.panel( 'widgets' ).focus();" ) . '</p>';
 		}
 
-		$this->manager->register_section_type( 'WP_Customize_Nav_Menu_Locations_Section' );
 		$this->manager->add_section( new WP_Customize_Nav_Menu_Locations_Section( $this->manager, 'menu_locations', array(
 			'title'       	=> __( 'View All Locations' ),
 			'panel'       	=> 'nav_menus',
@@ -673,7 +677,6 @@ final class WP_Customize_Nav_Menus {
 		}
 
 		// Add the add-new-menu section and controls.
-		$this->manager->register_section_type( 'WP_Customize_New_Menu_Section' );
 		$this->manager->add_section( new WP_Customize_New_Menu_Section( $this->manager, 'add_menu', array(
 			'title'    => __( 'Create New Menu' ),
 			'panel'    => 'nav_menus',

@@ -1139,13 +1139,26 @@
 		 * @since 4.3.0
 		 */
 		attachEvents: function() {
-			var section = this;
+			var section = this,
+				container = section.container,
+				contentContainer = section.contentContainer;
 
 			// We have to manually handle section expanded because we do not
 			// apply the `accordion-section-title` class to this button-driven section.
-			this.container.on( 'click', '.customize-add-menu-button', function() {
+			container.on( 'click', '.customize-add-menu-button', function() {
 				section.expand();
 			});
+
+			contentContainer.on( 'keydown', '.menu-name-field', function( event ) {
+				if ( 13 === event.which ) { // Enter.
+					section.submit();
+				}
+			} );
+			contentContainer.on( 'click', '#customize-new-menu-submit', function( event ) {
+				section.submit();
+				event.stopPropagation();
+				event.preventDefault();
+			} );
 
 			api.Section.prototype.attachEvents.apply( this, arguments );
 		},
@@ -1158,21 +1171,17 @@
 		},
 
 		populateControls: function() {
-			var section = this, menuNameControlId, menuNameControl, menuLocationsControlId, menuLocationsControl;
+			var section = this, menuNameControlId, menuNameControl, menuLocationsControlId, menuLocationsControl, newMenuSubmitControlId, newMenuSubmitControl;
 
 			menuNameControlId = section.id + '[name]';
 			menuNameControl = api.control( menuNameControlId );
 			if ( ! menuNameControl ) {
 				menuNameControl = new api.controlConstructor.nav_menu_name( menuNameControlId, {
-					params: {
-						type: 'nav_menu_name',
-						content: '<li id="customize-control-' + section.id.replace( '[', '-' ).replace( ']', '' ) + '-name" class="customize-control customize-control-nav_menu_name"></li>', // @todo core should do this for us; see #30741
-						label: api.Menus.data.l10n.menuNameLabel,
-						description: api.Menus.data.l10n.newMenuNameDescription,
-						active: true,
-						section: section.id,
-						priority: 0
-					}
+					type: 'nav_menu_name',
+					label: api.Menus.data.l10n.menuNameLabel,
+					description: api.Menus.data.l10n.newMenuNameDescription,
+					section: section.id,
+					priority: 0
 				} );
 				api.control.add( menuNameControl.id, menuNameControl );
 				menuNameControl.active.set( true );
@@ -1182,19 +1191,89 @@
 			menuLocationsControl = api.control( menuLocationsControlId );
 			if ( ! menuLocationsControl ) {
 				menuLocationsControl = new api.controlConstructor.nav_menu_locations( menuLocationsControlId, {
-					params: {
-						type: 'nav_menu_locations',
-						content: '<li id="customize-control-' + section.id.replace( '[', '-' ).replace( ']', '' ) + '-locations" class="customize-control customize-control-nav_menu_locations"></li>', // @todo core should do this for us; see #30741
-						section: section.id,
-						priority: 1,
-						active: true,
-						menu_id: ''
-					}
+					type: 'nav_menu_locations',
+					section: section.id,
+					priority: 1,
+					menu_id: ''
 				} );
 				api.control.add( menuLocationsControlId, menuLocationsControl );
 				menuLocationsControl.active.set( true );
 			}
+
+			newMenuSubmitControlId = section.id + '[submit]';
+			newMenuSubmitControl = api.control( newMenuSubmitControlId );
+			if ( !newMenuSubmitControl ) {
+				newMenuSubmitControl = new api.controlConstructor.new_menu_submit( newMenuSubmitControlId, {
+					type: 'new_menu_submit',
+					section: section.id,
+					priority: 1,
+					menu_id: ''
+				} );
+				api.control.add( newMenuSubmitControlId, newMenuSubmitControl );
+				newMenuSubmitControl.active.set( true );
+			}
 		},
+
+		/**
+		 * Create the new menu with the name supplied.
+		 */
+		submit: function() {
+
+			var section = this,
+				contentContainer = section.contentContainer,
+				nameInput = contentContainer.find( '.menu-name-field' ).first(),
+				name = nameInput.val(),
+				menuSection,
+				customizeId,
+				placeholderId = api.Menus.generatePlaceholderAutoIncrementId();
+
+			if ( ! name ) {
+				nameInput.addClass( 'invalid' );
+				nameInput.focus();
+				return;
+			}
+
+			customizeId = 'nav_menu[' + String( placeholderId ) + ']';
+
+			// Register the menu control setting.
+			api.create( customizeId, customizeId, {}, {
+				type: 'nav_menu',
+				transport: api.Menus.data.settingTransport,
+				previewer: api.previewer
+			} );
+			api( customizeId ).set( $.extend(
+				{},
+				api.Menus.data.defaultSettingValues.nav_menu,
+				{
+					name: name
+				}
+			) );
+
+			/*
+			 * Add the menu section (and its controls).
+			 * Note that this will automatically create the required controls
+			 * inside via the Section's ready method.
+			 */
+			menuSection = new api.Menus.MenuSection( customizeId, {
+				id: customizeId,
+				panel: 'nav_menus',
+				title: displayNavMenuName( name ),
+				customizeAction: api.Menus.data.l10n.customizingMenus,
+				type: 'nav_menu',
+				priority: 10,
+				menu_id: placeholderId
+			} );
+			api.section.add( customizeId, menuSection );
+
+			// Clear name field.
+			nameInput.val( '' );
+			nameInput.removeClass( 'invalid' );
+
+			wp.a11y.speak( api.Menus.data.l10n.menuAdded );
+
+			// Focus on the new menu section.
+			api.section( customizeId ).focus(); // @todo should we focus on the new menu's control and open the add-items panel? Thinking user flow...
+		}
 	});
 
 	/**
@@ -2761,143 +2840,15 @@
 	} );
 
 	/**
-	 * wp.customize.Menus.NewMenuControl
+	 * wp.customize.Menus.NewMenuSubmitControl
 	 *
-	 * Customizer control for creating new menus and handling deletion of existing menus.
-	 * Note that 'new_menu' must match the WP_Customize_New_Menu_Control::$type.
+	 * Customizer control for submitting new menus for creation.
+	 * Note that 'new_menu_submit' must match the WP_Customize_New_Menu_Submit_Control::$type.
 	 *
 	 * @constructor
-	 * @augments wp.customize.Control
+	 * @var wp.customize.Control
 	 */
-	api.Menus.NewMenuControl = api.Control.extend({
-		// /**
-		//  * Set up the control.
-		//  */
-		// ready: function() {
-		// 	this.populateControls();
-		// },
-
-		// populateControls: function() {
-		// 	var section = this, menuNameControlId, menuNameControl, menuLocationsControlId, menuLocationsControl;
-
-		// 	menuNameControlId = section.id + '[name]';
-		// 	menuNameControl = api.control( menuNameControlId );
-		// 	if ( ! menuNameControl ) {
-		// 		menuNameControl = api.controlConstructor.nav_menu_name( menuNameControlId, {
-		// 			params: {
-		// 				type: 'nav_menu_name',
-		// 				content: '<li id="customize-control-' + section.id.replace( '[', '-' ).replace( ']', '' ) + '-name" class="customize-control customize-control-nav_menu_name"></li>', // @todo core should do this for us; see #30741
-		// 				label: api.Menus.data.l10n.menuNameLabel,
-		// 				description: api.Menus.data.l10n.newMenuNameDescription,
-		// 				active: true,
-		// 				section: section.id,
-		// 				priority: 0,
-		// 				settings: {
-		// 					'default': section.id
-		// 				}
-		// 			}
-		// 		} );
-		// 		api.control.add( menuNameControl.id, menuNameControl );
-		// 		menuNameControl.active.set( true );
-		// 	}
-
-		// 	menuLocationsControlId = section.id + '[locations]';
-		// 	menuLocationsControl = api.control( menuLocationsControlId );
-		// 	if ( ! menuLocationsControl ) {
-		// 		menuLocationsControl = api.controlConstructor.nav_menu_locations( menuLocationsControlId, {
-		// 			params: {
-		// 				type: 'nav_menu_locations',
-		// 				content: '<li id="customize-control-' + section.id.replace( '[', '-' ).replace( ']', '' ) + '-locations" class="customize-control customize-control-nav_menu_locations"></li>', // @todo core should do this for us; see #30741
-		// 				section: section.id,
-		// 				priority: 1,
-		// 				active: true,
-		// 				settings: {
-		// 					'default': section.id
-		// 				},
-		// 				menu_id: ''
-		// 			}
-		// 		} );
-		// 		api.control.add( menuLocationsControlId, menuLocationsControl );
-		// 		menuLocationsControl.active.set( true );
-		// 	}
-		// },
-
-		_bindHandlers: function() {
-			var self = this,
-				name = $( '#customize-control-new_menu_name input' ),
-				submit = $( '#create-new-menu-submit' );
-			name.on( 'keydown', function( event ) {
-				if ( 13 === event.which ) { // Enter.
-					self.submit();
-				}
-			} );
-			submit.on( 'click', function( event ) {
-				self.submit();
-				event.stopPropagation();
-				event.preventDefault();
-			} );
-		},
-
-		/**
-		 * Create the new menu with the name supplied.
-		 */
-		submit: function() {
-
-			var control = this,
-				container = control.container.closest( '.accordion-section-new-menu' ),
-				nameInput = container.find( '.menu-name-field' ).first(),
-				name = nameInput.val(),
-				menuSection,
-				customizeId,
-				placeholderId = api.Menus.generatePlaceholderAutoIncrementId();
-
-			if ( ! name ) {
-				nameInput.addClass( 'invalid' );
-				nameInput.focus();
-				return;
-			}
-
-			customizeId = 'nav_menu[' + String( placeholderId ) + ']';
-
-			// Register the menu control setting.
-			api.create( customizeId, customizeId, {}, {
-				type: 'nav_menu',
-				transport: api.Menus.data.settingTransport,
-				previewer: api.previewer
-			} );
-			api( customizeId ).set( $.extend(
-				{},
-				api.Menus.data.defaultSettingValues.nav_menu,
-				{
-					name: name
-				}
-			) );
-
-			/*
-			 * Add the menu section (and its controls).
-			 * Note that this will automatically create the required controls
-			 * inside via the Section's ready method.
-			 */
-			menuSection = new api.Menus.MenuSection( customizeId, {
-				panel: 'nav_menus',
-				title: displayNavMenuName( name ),
-				customizeAction: api.Menus.data.l10n.customizingMenus,
-				type: 'nav_menu',
-				priority: 10,
-				menu_id: placeholderId
-			} );
-			api.section.add( menuSection );
-
-			// Clear name field.
-			nameInput.val( '' );
-			nameInput.removeClass( 'invalid' );
-
-			wp.a11y.speak( api.Menus.data.l10n.menuAdded );
-
-			// Focus on the new menu section.
-			api.section( customizeId ).focus(); // @todo should we focus on the new menu's control and open the add-items panel? Thinking user flow...
-		}
-	});
+	api.Menus.NewMenuSubmitControl = api.Control;
 
 	/**
 	 * Extends wp.customize.controlConstructor with control constructor for
@@ -2911,7 +2862,7 @@
 		nav_menu_locations: api.Menus.MenuLocationsControl,
 		nav_menu_auto_add: api.Menus.MenuAutoAddControl,
 		nav_menu_delete: api.Menus.MenuDeleteControl,
-		new_menu: api.Menus.NewMenuControl
+		new_menu_submit: api.Menus.NewMenuSubmitControl
 	});
 
 	/**
