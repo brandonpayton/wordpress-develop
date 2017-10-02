@@ -1215,7 +1215,7 @@
 		},
 
 		/**
-		 * Create the new menu with the name supplied.
+		 * Create the new menu with the supplied name and location settings.
 		 */
 		submit: function() {
 			var section = this,
