@@ -1218,7 +1218,6 @@
 		 * Create the new menu with the name supplied.
 		 */
 		submit: function() {
-
 			var section = this,
 				contentContainer = section.contentContainer,
 				nameInput = contentContainer.find( '.menu-name-field' ).first(),
@@ -1268,6 +1267,19 @@
 			// Clear name field.
 			nameInput.val( '' );
 			nameInput.removeClass( 'invalid' );
+
+			contentContainer.find( '.assigned-menu-location input[type=checkbox]' ).each( function() {
+				var checkbox = $( this ),
+				navMenuLocationSetting;
+
+				if ( checkbox.prop( 'checked' ) ) {
+					navMenuLocationSetting = api( 'nav_menu_locations[' + checkbox.data( 'location-id' ) + ']' );
+					navMenuLocationSetting.set( placeholderId );
+
+					// Reset state for next new menu
+					checkbox.prop( 'checked', false );
+				}
+			} );
 
 			wp.a11y.speak( api.Menus.data.l10n.menuAdded );
 
@@ -2218,31 +2230,35 @@
 			control.container.find( '.assigned-menu-location' ).each(function() {
 				var container = $( this ),
 					checkbox = container.find( 'input[type=checkbox]' ),
-					element,
-					updateSelectedMenuLabel,
-					navMenuLocationSetting = api( 'nav_menu_locations[' + checkbox.data( 'location-id' ) + ']' );
+					element = new api.Element( checkbox ),
+					navMenuLocationSetting = api( 'nav_menu_locations[' + checkbox.data( 'location-id' ) + ']' ),
+					isNewMenu = control.params.menu_id === '',
+					updateCheckbox = isNewMenu ? _.noop : function( checked ) {
+						element.set( checked );
+					},
+					updateSetting = isNewMenu ? _.noop : function( checked ) {
+						navMenuLocationSetting.set( checked ? control.params.menu_id : 0 );
+					},
+					updateSelectedMenuLabel = function( selectedMenuId ) {
+						var menuSetting = api( 'nav_menu[' + String( selectedMenuId ) + ']' );
+						if ( ! selectedMenuId || ! menuSetting || ! menuSetting() ) {
+							container.find( '.theme-location-set' ).hide();
+						} else {
+							container.find( '.theme-location-set' ).show().find( 'span' ).text( displayNavMenuName( menuSetting().name ) );
+						}
+					};
 
-				updateSelectedMenuLabel = function( selectedMenuId ) {
-					var menuSetting = api( 'nav_menu[' + String( selectedMenuId ) + ']' );
-					if ( ! selectedMenuId || ! menuSetting || ! menuSetting() ) {
-						container.find( '.theme-location-set' ).hide();
-					} else {
-						container.find( '.theme-location-set' ).show().find( 'span' ).text( displayNavMenuName( menuSetting().name ) );
-					}
-				};
-
-				element = new api.Element( checkbox );
-				element.set( navMenuLocationSetting.get() === control.params.menu_id );
+				updateCheckbox( navMenuLocationSetting.get() === control.params.menu_id );
 
 				checkbox.on( 'change', function() {
 					// Note: We can't use element.bind( function( checked ){ ... } ) here because it will trigger a change as well.
-					navMenuLocationSetting.set( this.checked ? control.params.menu_id : 0 );
+					updateSetting( this.checked );
 				} );
 
-				navMenuLocationSetting.bind(function( selectedMenuId ) {
-					element.set( selectedMenuId === control.params.menu_id );
+				navMenuLocationSetting.bind( function( selectedMenuId ) {
+					updateCheckbox( selectedMenuId === control.params.menu_id );
 					updateSelectedMenuLabel( selectedMenuId );
-				});
+				} );
 				updateSelectedMenuLabel( navMenuLocationSetting.get() );
 			});
 		}
