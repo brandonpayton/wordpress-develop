@@ -727,11 +727,11 @@ body.adding-menu-items #customize-preview iframe {
 }
 
 #accordion-section-add_menu h3,
-#accordion-section-add_menu button.customize-add-menu-button {
+#accordion-section-add_menu .customize-add-menu-button {
 	margin: 0;
 }
 
-#accordion-section-add_menu button.customize-add-menu-button {
+#accordion-section-add_menu .customize-add-menu-button {
 	font-weight: normal;
 }
 
