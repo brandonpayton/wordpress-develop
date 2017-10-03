@@ -1624,8 +1624,6 @@
 			$removeBtn = control.container.find( '.item-delete' );
 
 			$removeBtn.on( 'click', function(event) {
-				event.preventDefault();
-
 				// Find an adjacent element to add focus to when this menu item goes away
 				var addingItems = true, $adjacentFocusTarget, $next, $prev;
 
