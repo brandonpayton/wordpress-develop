@@ -40,8 +40,8 @@ class WP_Customize_Nav_Menu_Locations_Section extends WP_Customize_Section {
 	 */
 	protected function title_template() {
 		?>
-		<span class="customize-section-title-heading"><?php _e( 'Menu Locations' ); ?></span>
-		<p class="customize-section-title-description">{{ data.titleDescription }}</p>
+		<span class="customize-control-title customize-section-title-menu_locations-heading"><?php _e( 'Menu Locations' ); ?></span>
+		<p class="customize-control-description customize-section-title-menu_locations-description">{{ data.titleDescription }}</p>
 		<?php
 		parent::title_template();
 	}

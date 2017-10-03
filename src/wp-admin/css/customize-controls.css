@@ -361,15 +361,6 @@ body.trashing #publish-settings {
 	top: 46px;
 }
 
-#customize-controls .customize-section-title-heading {
-	margin: 15px;
-	margin-bottom: 7px;
-}
-#customize-controls .customize-section-title-description {
-	margin: 15px;
-	margin-top: 7px;
-}
-
 #customize-controls .customize-info .accordion-section-title {
 	background: #fff;
 	color: #555d66;
@@ -907,8 +898,7 @@ p.customize-section-description {
 	height: auto;
 }
 
-.customize-control-title,
-.customize-section-title-heading {
+.customize-control-title {
 	display: block;
 	font-size: 14px;
 	line-height: 24px;
