@@ -1133,6 +1133,7 @@
 	 * @augments wp.customize.Section
 	 */
 	api.Menus.NewMenuSection = api.Section.extend({
+
 		/**
 		 * Add behaviors for the accordion section.
 		 *
