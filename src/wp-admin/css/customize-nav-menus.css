@@ -14,7 +14,8 @@
 	padding: 0 12px 0 12px;
 }
 
-#customize-theme-controls .customize-section-title-menu_locations-description {
+#customize-theme-controls .customize-control-description.customize-section-title-menu_locations-description {
+	/* Override the default italic style for control descriptions */
 	font-style: normal;
 }
 
@@ -185,6 +186,24 @@
 	font-style: normal;
 }
 
+.wp-customizer .menu-settings dl {
+	margin: 12px 0 0 0;
+	padding: 0;
+}
+
+.wp-customizer .menu-settings .checkbox-input {
+	margin-top: 8px;
+}
+
+.wp-customizer .menu-settings .menu-theme-locations {
+	border-top: 1px solid #ccc;
+}
+
+.wp-customizer .menu-settings {
+	margin-top: 36px;
+	border-top: none;
+}
+
 .wp-customizer .menu-location-settings {
 	margin-top: 12px;
 	border-top: none;
@@ -196,10 +215,13 @@
 	padding-top: 12px;
 }
 
+.menu-settings .customize-control-checkbox label,
 .menu-location-settings .customize-control-checkbox label {
 	line-height: 1;
 }
 
+/* @todo update selector or potentially remove */
+.menu-settings .customize-control.customize-control-checkbox,
 .menu-location-settings .customize-control.customize-control-checkbox {
 	margin-bottom: 8px; /* Override collapsing at smaller viewports. */
 }
