@@ -666,7 +666,8 @@ body.trashing #publish-settings {
 	position: static;
 }
 
-.customize-section-description-container {
+.customize-section-description-container,
+.control-section-nav_menu .customize-section-description-container {
 	margin-bottom: 15px;
 }
 

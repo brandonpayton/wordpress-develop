@@ -14,6 +14,10 @@
 	padding: 0 12px 0 12px;
 }
 
+#customize-theme-controls .customize-section-title-menu_locations-description {
+	font-style: normal;
+}
+
 .menu-in-location,
 .menu-in-locations {
 	display: block;
@@ -32,6 +36,23 @@
 	margin-left: 6px;
 	vertical-align: middle;
 	line-height: 28px;
+}
+
+#customize-controls .customize-control-nav_menu_name {
+	margin-bottom: 12px;
+}
+
+.customize-control-nav_menu_name p:last-of-type {
+	margin-bottom: 0;
+}
+
+#customize-new-menu-submit {
+	float: right;
+	min-width: 85px;
+}
+
+#customize-new-menu-submit-description {
+	margin: 0;
 }
 
 .wp-customizer .menu-item-bar .menu-item-handle,
@@ -165,8 +186,14 @@
 }
 
 .wp-customizer .menu-location-settings {
-	margin-top: 36px;
+	margin-top: 12px;
 	border-top: none;
+}
+
+.wp-customizer .control-section-nav_menu .menu-location-settings {
+	margin-top: 24px;
+	border-top: 1px solid #ddd;
+	padding-top: 12px;
 }
 
 .menu-location-settings .customize-control-checkbox label {
@@ -794,7 +821,12 @@ li.assigned-to-menu-location .add-new-menu-item {
 	margin-bottom: 0;
 }
 
-.customize-control-nav_menu {
+.customize-control-nav_menu .new-menu-item-invitation {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.customize-control-nav_menu .customize-control-nav_menu-buttons {
 	margin-top: 12px;
 }
 
