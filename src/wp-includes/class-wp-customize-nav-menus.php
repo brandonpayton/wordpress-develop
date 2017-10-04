@@ -534,12 +534,10 @@ final class WP_Customize_Nav_Menus {
 			}
 		}
 
-		// Require JS-rendered section types.
-		$this->manager->register_section_type( 'WP_Customize_Nav_Menu_Locations_Section' );
-		$this->manager->register_section_type( 'WP_Customize_New_Menu_Section' );
-
 		// Require JS-rendered control types.
 		$this->manager->register_panel_type( 'WP_Customize_Nav_Menus_Panel' );
+		$this->manager->register_section_type( 'WP_Customize_Nav_Menu_Locations_Section' );
+		$this->manager->register_section_type( 'WP_Customize_New_Menu_Section' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Name_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Locations_Control' );
