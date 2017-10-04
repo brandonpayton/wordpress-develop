@@ -997,7 +997,7 @@
 			}
 
 			// Add the menu locations control.
-			menuLocationsControlId = section.id + '[locations]'
+			menuLocationsControlId = section.id + '[locations]';
 			menuLocationsControl = api.control( menuLocationsControlId );
 			if ( ! menuLocationsControl ) {
 				menuLocationsControl = new api.controlConstructor.nav_menu_locations( menuLocationsControlId, {
@@ -1623,7 +1623,7 @@
 			// Configure delete button.
 			$removeBtn = control.container.find( '.item-delete' );
 
-			$removeBtn.on( 'click', function(event) {
+			$removeBtn.on( 'click', function() {
 				// Find an adjacent element to add focus to when this menu item goes away
 				var addingItems = true, $adjacentFocusTarget, $next, $prev;
 
