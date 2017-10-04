@@ -1177,11 +1177,18 @@
 
 		/**
 		 * Set up the control.
+		 *
+		 * @since 4.9.0
 		 */
 		ready: function() {
 			this.populateControls();
 		},
 
+		/**
+		 * Create the controls for this section.
+		 *
+		 * @since 4.9.0
+		 */
 		populateControls: function() {
 			var section = this,
 				menuNameControlId,
@@ -1233,7 +1240,9 @@
 		},
 
 		/**
-		 * Create the new menu with the supplied name and location settings.
+		 * Create the new menu with name and location supplied by the user.
+		 *
+		 * @since 4.9.0
 		 */
 		submit: function() {
 			var section = this,
@@ -2221,10 +2230,17 @@
 	 *
 	 * Customizer control for a nav menu's locations.
 	 *
+	 * @since 4.9.0
 	 * @constructor
 	 * @augments wp.customize.Control
 	 */
 	api.Menus.MenuLocationsControl = api.Control.extend({
+
+		/**
+		 * Set up the control.
+		 *
+		 * @since 4.9.0
+		 */
 		ready: function () {
 			var control = this;
 
@@ -2322,12 +2338,16 @@
 	 *
 	 * Customizer control for deleting a nav menu.
 	 *
+	 * @since 4.9.0
 	 * @constructor
 	 * @augments wp.customize.Control
 	 */
 	api.Menus.MenuDeleteControl = api.Control.extend({
+
 		/**
 		 * Set up the control.
+		 *
+		 * @since 4.9.0
 		 */
 		ready: function () {
 			var control = this;
@@ -2861,6 +2881,13 @@
 			return menuItemControl;
 		},
 
+		/**
+		 * Show an invitation to add new menu items when there are no menu items.
+		 *
+		 * @since 4.9.0
+		 *
+		 * @param {wp.customize.controlConstructor.nav_menu_item[]} optionalMenuItemControls
+		 */
 		updateInvitationVisibility: function ( optionalMenuItemControls ) {
 			var menuItemControls = optionalMenuItemControls || this.getMenuItemControls();
 
@@ -2874,6 +2901,7 @@
 	 * Customizer control for submitting new menus for creation.
 	 * Note that 'new_menu_submit' must match the WP_Customize_New_Menu_Submit_Control::$type.
 	 *
+	 * @since 4.9.0
 	 * @constructor
 	 * @var wp.customize.Control
 	 */
