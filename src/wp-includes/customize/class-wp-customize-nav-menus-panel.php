@@ -95,7 +95,7 @@ class WP_Customize_Nav_Menus_Panel extends WP_Customize_Panel {
 		<?php
 		// NOTE: The following is a workaround for an inability to treat (and thus label) a list of sections as a whole.
 		?>
-		<li class="customize-control-title customize-section-title-nav_menus-heading">Menus</li>
+		<li class="customize-control-title customize-section-title-nav_menus-heading"><?php _e( 'Menus' ); ?></li>
 	<?php
 	}
 }
