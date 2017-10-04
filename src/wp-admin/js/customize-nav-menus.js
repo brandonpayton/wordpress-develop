@@ -1010,7 +1010,6 @@
 			menuLocationsControl = api.control( menuLocationsControlId );
 			if ( ! menuLocationsControl ) {
 				menuLocationsControl = new api.controlConstructor.nav_menu_locations( menuLocationsControlId, {
-					type: 'nav_menu_locations',
 					section: section.id,
 					priority: 999,
 					settings: {
@@ -1044,8 +1043,6 @@
 			menuDeleteControl = api.control( menuDeleteControlId );
 			if ( ! menuDeleteControl ) {
 				menuDeleteControl = new api.controlConstructor.nav_menu_delete( menuDeleteControlId, {
-					type: 'nav_menu_delete',
-					label: '',
 					section: section.id,
 					priority: 1001,
 					settings: {
@@ -1202,7 +1199,6 @@
 			menuNameControl = api.control( menuNameControlId );
 			if ( ! menuNameControl ) {
 				menuNameControl = new api.controlConstructor.nav_menu_name( menuNameControlId, {
-					type: 'nav_menu_name',
 					label: api.Menus.data.l10n.menuNameLabel,
 					description: api.Menus.data.l10n.newMenuNameDescription,
 					section: section.id,
@@ -1216,7 +1212,6 @@
 			menuLocationsControl = api.control( menuLocationsControlId );
 			if ( ! menuLocationsControl ) {
 				menuLocationsControl = new api.controlConstructor.nav_menu_locations( menuLocationsControlId, {
-					type: 'nav_menu_locations',
 					section: section.id,
 					priority: 1,
 					menu_id: ''
@@ -1229,7 +1224,6 @@
 			newMenuSubmitControl = api.control( newMenuSubmitControlId );
 			if ( !newMenuSubmitControl ) {
 				newMenuSubmitControl = new api.controlConstructor.new_menu_submit( newMenuSubmitControlId, {
-					type: 'new_menu_submit',
 					section: section.id,
 					priority: 1,
 					menu_id: ''
@@ -1281,11 +1275,9 @@
 			 * inside via the Section's ready method.
 			 */
 			menuSection = new api.Menus.MenuSection( customizeId, {
-				id: customizeId,
 				panel: 'nav_menus',
 				title: displayNavMenuName( name ),
 				customizeAction: api.Menus.data.l10n.customizingMenus,
-				type: 'nav_menu',
 				priority: 10,
 				menu_id: placeholderId
 			} );
