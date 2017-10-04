@@ -46,19 +46,21 @@ class WP_Customize_Nav_Menu_Locations_Control extends WP_Customize_Control {
 
 				<?php foreach ( get_registered_nav_menus() as $location => $description ) : ?>
 					<# elementId = _.uniqueId( 'customize-nav-menu-control-location-' ); #>
-					<li class="customize-control customize-control-checkbox assigned-menu-location customize-inside-control-row">
-						<input id="{{ elementId }}" type="checkbox" data-menu-id="{{ data.menu_id }}" data-location-id="<?php echo esc_attr( $location ); ?>" class="menu-location" />
-						<label for="{{ elementId }}">
-							<?php echo $description; ?>
-							<span class="theme-location-set">
-								<?php
-								/* translators: %s: menu name */
-								printf( _x( '(Current: %s)', 'menu location' ),
-									'<span class="current-menu-location-name-' . esc_attr( $location ) . '"></span>'
-								);
-								?>
-							</span>
-						</label>
+					<li class="customize-control customize-control-checkbox assigned-menu-location">
+						<span class="customize-inside-control-row">
+							<input id="{{ elementId }}" type="checkbox" data-menu-id="{{ data.menu_id }}" data-location-id="<?php echo esc_attr( $location ); ?>" class="menu-location" />
+							<label for="{{ elementId }}">
+								<?php echo $description; ?>
+								<span class="theme-location-set">
+									<?php
+									/* translators: %s: menu name */
+									printf( _x( '(Current: %s)', 'menu location' ),
+										'<span class="current-menu-location-name-' . esc_attr( $location ) . '"></span>'
+									);
+									?>
+								</span>
+							</label>
+						</span>
 					</li>
 				<?php endforeach; ?>
 			</ul>
