@@ -961,7 +961,16 @@
 		},
 
 		populateControls: function() {
-			var section = this, menuNameControlId, menuLocationsControlId, menuAutoAddControlId, menuDeleteControlId, menuControl, menuNameControl, menuLocationsControl, menuAutoAddControl, menuDeleteControl;
+			var section = this,
+				menuNameControlId,
+				menuLocationsControlId,
+				menuAutoAddControlId,
+				menuDeleteControlId,
+				menuControl,
+				menuNameControl,
+				menuLocationsControl,
+				menuAutoAddControl,
+				menuDeleteControl;
 
 			// Add the control for managing the menu name.
 			menuNameControlId = section.id + '[name]';
@@ -1144,8 +1153,10 @@
 				container = section.container,
 				contentContainer = section.contentContainer;
 
-			// We have to manually handle section expanded because we do not
-			// apply the `accordion-section-title` class to this button-driven section.
+			/*
+			 * We have to manually handle section expanded because we do not
+			 * apply the `accordion-section-title` class to this button-driven section.
+			 */
 			container.on( 'click', '.customize-add-menu-button', function() {
 				section.expand();
 			});
@@ -1172,7 +1183,13 @@
 		},
 
 		populateControls: function() {
-			var section = this, menuNameControlId, menuNameControl, menuLocationsControlId, menuLocationsControl, newMenuSubmitControlId, newMenuSubmitControl;
+			var section = this,
+				menuNameControlId,
+				menuLocationsControlId,
+				newMenuSubmitControlId,
+				menuNameControl,
+				menuLocationsControl,
+				newMenuSubmitControl;
 
 			menuNameControlId = section.id + '[name]';
 			menuNameControl = api.control( menuNameControlId );
