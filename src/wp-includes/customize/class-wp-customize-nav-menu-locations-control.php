@@ -40,7 +40,7 @@ class WP_Customize_Nav_Menu_Locations_Control extends WP_Customize_Control {
 			<# var elementId; #>
 			<ul class="menu-location-settings">
 				<li class="customize-control assigned-menu-locations-title">
-					<span class="customize-control-title"><?php _e( 'Display Location' ); ?></span>
+					<span class="customize-control-title"><?php _e( 'Menu Locations' ); ?></span>
 					<p><?php _e( 'Here\'s where this menu appears. If you\'d like to change that, pick another location.' ); ?></p>
 				</li>
 
