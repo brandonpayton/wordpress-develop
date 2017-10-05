@@ -543,7 +543,6 @@ final class WP_Customize_Nav_Menus {
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Locations_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Auto_Add_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Item_Control' );
-		$this->manager->register_control_type( 'WP_Customize_New_Menu_Submit_Control' );
 
 		// Create a panel for Menus.
 		$description = '<p>' . __( 'This panel is used for managing navigation menus for content you have already published on your site. You can create menus and add items for existing content such as pages, posts, categories, tags, formats, or custom links.' ) . '</p>';
@@ -924,6 +923,11 @@ final class WP_Customize_Nav_Menus {
 					<?php _e( 'Delete Menu' ); ?>
 				</button>
 			</div>
+		</script>
+
+		<script type="text/html" id="tmpl-nav-menu-submit-new-button">
+			<p id="customize-new-menu-submit-description"><?php _e( 'Click "next" to start adding links to your new menu.' ); ?></p>
+			<button id="customize-new-menu-submit" type="button" class="button" aria-describedby="customize-new-menu-submit-description"><?php _e( 'Next' ); ?></button>
 		</script>
 	<?php
 	}

@@ -1227,10 +1227,10 @@
 			newMenuSubmitControlId = section.id + '[submit]';
 			newMenuSubmitControl = api.control( newMenuSubmitControlId );
 			if ( !newMenuSubmitControl ) {
-				newMenuSubmitControl = new api.controlConstructor.new_menu_submit( newMenuSubmitControlId, {
+				newMenuSubmitControl = new api.Control( newMenuSubmitControlId, {
 					section: section.id,
 					priority: 1,
-					menu_id: ''
+					templateId: 'nav-menu-submit-new-button'
 				} );
 				api.control.add( newMenuSubmitControlId, newMenuSubmitControl );
 				newMenuSubmitControl.active.set( true );
@@ -2867,18 +2867,6 @@
 	} );
 
 	/**
-	 * wp.customize.Menus.NewMenuSubmitControl
-	 *
-	 * Customizer control for submitting new menus for creation.
-	 * Note that 'new_menu_submit' must match the WP_Customize_New_Menu_Submit_Control::$type.
-	 *
-	 * @since 4.9.0
-	 * @constructor
-	 * @var wp.customize.Control
-	 */
-	api.Menus.NewMenuSubmitControl = api.Control;
-
-	/**
 	 * Extends wp.customize.controlConstructor with control constructor for
 	 * menu_location, menu_item, nav_menu, and new_menu.
 	 */
@@ -2889,7 +2877,6 @@
 		nav_menu_name: api.Menus.MenuNameControl,
 		nav_menu_locations: api.Menus.MenuLocationsControl,
 		nav_menu_auto_add: api.Menus.MenuAutoAddControl,
-		new_menu_submit: api.Menus.NewMenuSubmitControl
 	});
 
 	/**
