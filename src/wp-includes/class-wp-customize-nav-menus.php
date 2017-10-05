@@ -395,6 +395,14 @@ final class WP_Customize_Nav_Menus {
 		$temp_nav_menu_setting      = new WP_Customize_Nav_Menu_Setting( $this->manager, 'nav_menu[-1]' );
 		$temp_nav_menu_item_setting = new WP_Customize_Nav_Menu_Item_Setting( $this->manager, 'nav_menu_item[-1]' );
 
+		$num_locations = count( get_registered_nav_menus() );
+		if ( 1 === $num_locations ) {
+			$locations_description = __( 'Your theme can display menus in one location.' );
+		} else {
+			/* translators: %s: number of menu locations */
+			$locations_description = sprintf( _n( 'Your theme can display menus in %s location.', 'Your theme can display menus in %s locations.', $num_locations ), number_format_i18n( $num_locations ) );
+		}
+
 		// Pass data to JS.
 		$settings = array(
 			'allMenus'             => wp_get_nav_menus(),
@@ -406,6 +414,7 @@ final class WP_Customize_Nav_Menus {
 				'page_label'             => get_post_type_object( 'page' )->labels->singular_name,
 				/* translators: %s:      menu location */
 				'menuLocation'           => _x( '(Currently set to: %s)', 'menu' ),
+				'locationsDescription'   => $locations_description,
 				'menuNameLabel'          => __( 'Menu Name' ),
 				'newMenuNameDescription' => __( 'If your theme has multiple menus, giving them clear names will help you manage them.' ),
 				'itemAdded'              => __( 'Menu item added' ),
@@ -536,8 +545,6 @@ final class WP_Customize_Nav_Menus {
 
 		// Require JS-rendered control types.
 		$this->manager->register_panel_type( 'WP_Customize_Nav_Menus_Panel' );
-		$this->manager->register_section_type( 'WP_Customize_Nav_Menu_Locations_Section' );
-		$this->manager->register_section_type( 'WP_Customize_New_Menu_Section' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Name_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Locations_Control' );
@@ -562,7 +569,7 @@ final class WP_Customize_Nav_Menus {
 
 		// Menu locations.
 		$locations     = get_registered_nav_menus();
-		$num_locations = count( array_keys( $locations ) );
+		$num_locations = count( $locations );
 		if ( 1 == $num_locations ) {
 			$description = '<p>' . __( 'Your theme can display menus in one location. Select which menu you would like to use.' ) . '</p>';
 		} else {
@@ -575,13 +582,12 @@ final class WP_Customize_Nav_Menus {
 			$description .= '<p>' . sprintf( __( 'If your theme has widget areas, you can also add menus there. Visit the <a href="%s">Widgets panel</a> and add a &#8220;Custom Menu widget&#8221; to display a menu in a sidebar or footer.' ), "javascript:wp.customize.panel( 'widgets' ).focus();" ) . '</p>';
 		}
 
-		$this->manager->add_section( new WP_Customize_Nav_Menu_Locations_Section( $this->manager, 'menu_locations', array(
+		$this->manager->add_section( 'menu_locations', array(
 			'title'       	=> __( 'View All Locations' ),
 			'panel'       	=> 'nav_menus',
 			'priority'    	=> 30,
-			'description' 	=> $description,
-			'num_locations' => $num_locations,
-		) ) );
+			'description' 	=> $description
+		) );
 
 		$choices = array( '0' => __( '&mdash; Select &mdash;' ) );
 		foreach ( $menus as $menu ) {
@@ -673,11 +679,12 @@ final class WP_Customize_Nav_Menus {
 		}
 
 		// Add the add-new-menu section and controls.
-		$this->manager->add_section( new WP_Customize_New_Menu_Section( $this->manager, 'add_menu', array(
-			'title'    => __( 'Create New Menu' ),
+		$this->manager->add_section( 'add_menu', array(
+			'type'     => 'new_menu',
+			'title'    => __( 'New Menu' ),
 			'panel'    => 'nav_menus',
 			'priority' => 20,
-		) ) );
+		) );
 
 		$this->manager->add_setting( new WP_Customize_Filter_Setting( $this->manager, 'nav_menus_created_posts', array(
 			'transport' => 'postMessage',
@@ -928,6 +935,19 @@ final class WP_Customize_Nav_Menus {
 		<script type="text/html" id="tmpl-nav-menu-submit-new-button">
 			<p id="customize-new-menu-submit-description"><?php _e( 'Click "next" to start adding links to your new menu.' ); ?></p>
 			<button id="customize-new-menu-submit" type="button" class="button" aria-describedby="customize-new-menu-submit-description"><?php _e( 'Next' ); ?></button>
+		</script>
+
+		<script type="text/html" id="tmpl-nav-menu-locations-header">
+			<span class="customize-control-title customize-section-title-menu_locations-heading"><?php _e( 'Menu Locations' ); ?></span>
+			<p class="customize-control-description customize-section-title-menu_locations-description">{{ data.l10n.locationsDescription }}</p>
+		</script>
+
+		<script type="text/html" id="tmpl-nav-menu-create-menu-section-title">
+			<h3>
+				<button type="button" class="button customize-add-menu-button">
+					<?php _e( 'Create New Menu' ); ?>
+				</button>
+			</h3>
 		</script>
 	<?php
 	}

@@ -339,7 +339,10 @@ class WP_Customize_Section {
 	protected function render_template() {
 		?>
 		<li id="accordion-section-{{ data.id }}" class="accordion-section control-section control-section-{{ data.type }}">
-			<?php $this->title_template(); ?>
+			<h3 class="accordion-section-title" tabindex="0">
+				{{ data.title }}
+				<span class="screen-reader-text"><?php _e( 'Press return or enter to open this section' ); ?></span>
+			</h3>
 			<ul class="accordion-section-content">
 				<li class="customize-section-description-container section-meta <# if ( data.description_hidden ) { #>customize-info<# } #>">
 					<div class="customize-section-title">
@@ -372,23 +375,6 @@ class WP_Customize_Section {
 		</li>
 		<?php
 	}
-
-	/**
-	 * An Underscore (JS) template for this section's title.
-	 *
-	 * Class variables for this control class are available in the `data` JS object;
-	 * export custom variables by overriding WP_Customize_Section::json().
-	 *
-	 * @return void
-	 */
-	protected function title_template() {
-		?>
-		<h3 class="accordion-section-title" tabindex="0">
-			{{ data.title }}
-			<span class="screen-reader-text"><?php _e( 'Press return or enter to open this section' ); ?></span>
-		</h3>
-		<?php
-	}
 }
 
 /** WP_Customize_Themes_Section class */
@@ -397,11 +383,5 @@ require_once( ABSPATH . WPINC . '/customize/class-wp-customize-themes-section.ph
 /** WP_Customize_Sidebar_Section class */
 require_once( ABSPATH . WPINC . '/customize/class-wp-customize-sidebar-section.php' );
 
-/** WP_Customize_Nav_Menu_Locations_Section class */
-require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-locations-section.php' );
-
 /** WP_Customize_Nav_Menu_Section class */
 require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-section.php' );
-
-/** WP_Customize_New_Menu_Section class */
-require_once( ABSPATH . WPINC . '/customize/class-wp-customize-new-menu-section.php' );

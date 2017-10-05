@@ -811,6 +811,18 @@
 			panel.container.find( '.hide-column-tog' ).click( function() {
 				panel.saveManageColumnsState();
 			});
+
+			// Wait until after construction to patch the UI
+			_.defer( function () {
+
+				panel.contentContainer.find( '#accordion-section-menu_locations' ).prepend(
+					wp.template( 'nav-menu-locations-header' )( api.Menus.data )
+				);
+
+				panel.contentContainer.find( '#accordion-section-add_menu .accordion-section-title' ).replaceWith(
+					wp.template( 'nav-menu-create-menu-section-title' )
+				);
+			} );
 		},
 
 		/**
@@ -1137,7 +1149,6 @@
 	 * wp.customize.Menus.NewMenuSection
 	 *
 	 * Customizer section for new menus.
-	 * Note that 'new_menu' must match the WP_Customize_New_Menu_Section::$type.
 	 *
 	 * @constructor
 	 * @augments wp.customize.Section
@@ -2876,7 +2887,7 @@
 		nav_menu: api.Menus.MenuControl,
 		nav_menu_name: api.Menus.MenuNameControl,
 		nav_menu_locations: api.Menus.MenuLocationsControl,
-		nav_menu_auto_add: api.Menus.MenuAutoAddControl,
+		nav_menu_auto_add: api.Menus.MenuAutoAddControl
 	});
 
 	/**
