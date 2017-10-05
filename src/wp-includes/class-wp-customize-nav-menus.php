@@ -543,7 +543,6 @@ final class WP_Customize_Nav_Menus {
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Locations_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Auto_Add_Control' );
 		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Item_Control' );
-		$this->manager->register_control_type( 'WP_Customize_Nav_Menu_Delete_Control' );
 		$this->manager->register_control_type( 'WP_Customize_New_Menu_Submit_Control' );
 
 		// Create a panel for Menus.
@@ -916,6 +915,14 @@ final class WP_Customize_Nav_Menus {
 					__( 'Move one level down' )
 				);
 				?>
+			</div>
+		</script>
+
+		<script type="text/html" id="tmpl-nav-menu-delete-button">
+			<div class="menu-delete-item">
+				<button type="button" class="button-link button-link-delete">
+					<?php _e( 'Delete Menu' ); ?>
+				</button>
 			</div>
 		</script>
 	<?php

@@ -785,11 +785,6 @@ require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-auto-add
 require_once( ABSPATH . WPINC . '/customize/class-wp-customize-new-menu-submit-control.php' );
 
 /**
- * WP_Customize_Nav_Menu_Delete_Control class.
- */
-require_once( ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-delete-control.php' );
-
-/**
  * WP_Customize_Date_Time_Control class.
  */
 require_once( ABSPATH . WPINC . '/customize/class-wp-customize-date-time-control.php' );

@@ -1042,16 +1042,20 @@
 			menuDeleteControlId = section.id + '[delete]';
 			menuDeleteControl = api.control( menuDeleteControlId );
 			if ( ! menuDeleteControl ) {
-				menuDeleteControl = new api.controlConstructor.nav_menu_delete( menuDeleteControlId, {
+				menuDeleteControl = new api.Control( menuDeleteControlId, {
 					section: section.id,
 					priority: 1001,
-					settings: {
-						'default': section.id
-					},
-					menu_id: section.params.menu_id
+					templateId: 'nav-menu-delete-button'
 				} );
 				api.control.add( menuDeleteControl.id, menuDeleteControl );
 				menuDeleteControl.active.set( true );
+				menuDeleteControl.deferred.embedded.done( function () {
+					menuDeleteControl.container.find( 'button' ).on( 'click', function() {
+						var menuId = section.params.menu_id;
+						var menuControl = api.Menus.getMenuControl( menuId );
+						menuControl.setting.set( false );
+					});
+				} );
 			}
 		},
 
@@ -2326,35 +2330,6 @@
 	});
 
 	/**
-	 * wp.customize.Menus.MenuDeleteControl
-	 *
-	 * Customizer control for deleting a nav menu.
-	 *
-	 * @since 4.9.0
-	 * @constructor
-	 * @augments wp.customize.Control
-	 */
-	api.Menus.MenuDeleteControl = api.Control.extend({
-
-		/**
-		 * Set up the control.
-		 *
-		 * @since 4.9.0
-		 */
-		ready: function () {
-			var control = this;
-
-			control.container.find( '.button-link-delete' ).on( 'click', function( event ) {
-				event.preventDefault();
-
-				var menuId = control.params.menu_id;
-				var menuControl = api.Menus.getMenuControl( menuId );
-				menuControl.setting.set( false );
-			});
-		}
-	});
-
-	/**
 	 * wp.customize.Menus.MenuControl
 	 *
 	 * Customizer control for menus.
@@ -2914,7 +2889,6 @@
 		nav_menu_name: api.Menus.MenuNameControl,
 		nav_menu_locations: api.Menus.MenuLocationsControl,
 		nav_menu_auto_add: api.Menus.MenuAutoAddControl,
-		nav_menu_delete: api.Menus.MenuDeleteControl,
 		new_menu_submit: api.Menus.NewMenuSubmitControl
 	});
 
