@@ -416,10 +416,10 @@ final class WP_Customize_Nav_Menus {
 				'menuLocation'           => _x( '(Currently set to: %s)', 'menu' ),
 				'locationsTitle'         => 1 === $num_locations ? __( 'Menu Location' ) : __( 'Menu Locations' ),
 				'locationsDescription'   => $locations_description,
-				'menuLocations'          => __( 'Here\'s where this menu appears. If you\'d like to change that, pick another location.' ),
-				'newMenuLocations'       => __( 'Where do you want this menu to appear?' ),
+				'menuLocations'          => _x( 'Here\'s where this menu appears. If you\'d like to change that, pick another location.', 'menu locations' ),
+				'newMenuLocations'       => _x( 'Where do you want this menu to appear?', 'menu locations' ),
 				/* translators: %s: Codex URL */
-				'newMenuLocationsHelp'   => sprintf( __( '(If you plan to use a menu <a class="external-link" target="_blank" href="%s">widget</a>, skip this step.)' ), 'https://codex.wordpress.org/WordPress_Widgets' ),
+				'newMenuLocationsHelp'   => sprintf( _x( '(If you plan to use a menu <a class="external-link" target="_blank" href="%s">widget</a>, skip this step.)', 'menu locations' ), 'https://codex.wordpress.org/WordPress_Widgets' ),
 				'menuNameLabel'          => __( 'Menu Name' ),
 				'newMenuNameDescription' => __( 'If your theme has multiple menus, giving them clear names will help you manage them.' ),
 				'itemAdded'              => __( 'Menu item added' ),
