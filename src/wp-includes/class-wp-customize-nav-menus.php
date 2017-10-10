@@ -416,6 +416,10 @@ final class WP_Customize_Nav_Menus {
 				'menuLocation'           => _x( '(Currently set to: %s)', 'menu' ),
 				'locationsTitle'         => 1 === $num_locations ? __( 'Menu Location' ) : __( 'Menu Locations' ),
 				'locationsDescription'   => $locations_description,
+				'menuLocations'          => __( 'Here\'s where this menu appears. If you\'d like to change that, pick another location.' ),
+				'newMenuLocations'       => __( 'Where do you want this menu to appear?' ),
+				/* translators: %s: Codex URL */
+				'newMenuLocationsHelp'   => sprintf( __( '(If you plan to use a menu <a class="external-link" target="_blank" href="%s">widget</a>, skip this step.)' ), 'https://codex.wordpress.org/WordPress_Widgets' ),
 				'menuNameLabel'          => __( 'Menu Name' ),
 				'newMenuNameDescription' => __( 'If your theme has multiple menus, giving them clear names will help you manage them.' ),
 				'itemAdded'              => __( 'Menu item added' ),
@@ -962,6 +966,10 @@ final class WP_Customize_Nav_Menus {
 					<?php _e( 'Create New Menu' ); ?>
 				</button>
 			</h3>
+		</script>
+
+		<script type="text/html" id="tmpl-nav-menu-create-locations-description">
+			{{ data.l10n.newMenuLocations }} <em>{{{ data.l10n.newMenuLocationsHelp }}}</em>
 		</script>
 	<?php
 	}

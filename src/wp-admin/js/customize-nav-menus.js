@@ -1027,7 +1027,8 @@
 					settings: {
 						'default': section.id
 					},
-					menu_id: section.params.menu_id
+					menu_id: section.params.menu_id,
+					description: api.Menus.data.l10n.menuLocations
 				} );
 				api.control.add( menuLocationsControl.id, menuLocationsControl );
 				menuControl.active.set( true );
@@ -1289,7 +1290,8 @@
 				menuLocationsControl = new api.controlConstructor.nav_menu_locations( menuLocationsControlId, {
 					section: section.id,
 					priority: 1,
-					menu_id: ''
+					menu_id: '',
+					description: wp.template( 'nav-menu-create-locations-description' )( api.Menus.data )
 				} );
 				api.control.add( menuLocationsControlId, menuLocationsControl );
 				menuLocationsControl.active.set( true );

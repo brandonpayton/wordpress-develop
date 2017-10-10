@@ -35,13 +35,13 @@ class WP_Customize_Nav_Menu_Locations_Control extends WP_Customize_Control {
 	 * @since 4.9.0
 	 */
 	public function content_template() {
-		if ( current_theme_supports( 'menus' ) ):
+		if ( current_theme_supports( 'menus' ) ) :
 			?>
 			<# var elementId; #>
 			<ul class="menu-location-settings">
 				<li class="customize-control assigned-menu-locations-title">
-					<span class="customize-control-title"><?php _e( 'Menu Locations' ); ?></span>
-					<p><?php _e( 'Here\'s where this menu appears. If you\'d like to change that, pick another location.' ); ?></p>
+					<span class="customize-control-title">{{ wp.customize.Menus.data.l10n.locationsTitle }}</span>
+					<p>{{{ data.description }}}</p>
 				</li>
 
 				<?php foreach ( get_registered_nav_menus() as $location => $description ) : ?>
