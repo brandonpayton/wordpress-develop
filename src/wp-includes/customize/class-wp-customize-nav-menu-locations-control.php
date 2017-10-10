@@ -50,14 +50,14 @@ class WP_Customize_Nav_Menu_Locations_Control extends WP_Customize_Control {
 								printf(
 									/* translators: %s: Codex URL */
 									_x( '(If you plan to use a menu <a class="external-link" target="_blank" href="%s">widget</a>, skip this step.)', 'menu locations' ),
-									'https://codex.wordpress.org/WordPress_Widgets'
+									__( 'https://codex.wordpress.org/WordPress_Widgets' )
 								);
 								// @codingStandardsIgnoreEnd
 								?>
 							</em>
 						</p>
 					<# } else { #>
-						<p><?php echo esc_html_x( 'Here\'s where this menu appears. If you\'d like to change that, pick another location.', 'menu locations' ); ?></p>
+						<p><?php echo esc_html_x( 'Here&#8217;s where this menu appears. If you&#8217;d like to change that, pick another location.', 'menu locations' ); ?></p>
 					<# } #>
 				</li>
 
