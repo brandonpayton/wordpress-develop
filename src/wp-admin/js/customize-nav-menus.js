@@ -1199,7 +1199,7 @@
 			}
 
 			updateNoticeVisibility = _.debounce( function() {
-				container.find( '.add-new-menu-notice' ).attr( 'hidden', getNavMenuCount() > 0 );
+				container.find( '.add-new-menu-notice' ).prop( 'hidden', getNavMenuCount() > 0 );
 			} );
 			addChangeEventListener = function ( setting ) {
 				if ( navMenuSettingPattern.test( setting.id ) ) {
