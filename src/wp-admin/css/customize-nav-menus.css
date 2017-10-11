@@ -212,6 +212,10 @@
 .wp-customizer .control-section-nav_menu .menu-location-settings {
 	margin-top: 24px;
 	border-top: 1px solid #ddd;
+}
+
+.wp-customizer .control-section-nav_menu .menu-location-settings,
+.customize-control-nav_menu_auto_add {
 	padding-top: 12px;
 }
 
