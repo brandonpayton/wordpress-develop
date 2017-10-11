@@ -52,10 +52,6 @@
 	min-width: 85px;
 }
 
-#customize-new-menu-submit-description {
-	margin: 0;
-}
-
 .wp-customizer .menu-item-bar .menu-item-handle,
 .wp-customizer .menu-item-settings,
 .wp-customizer .menu-item-settings .description-thin {
