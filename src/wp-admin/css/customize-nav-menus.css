@@ -782,10 +782,6 @@ body.adding-menu-items #customize-preview iframe {
 	margin: 15px 12px;
 }
 
-#accordion-section-add_menu .add-new-menu-notice[aria-hidden="true"] {
-	display: none;
-}
-
 #accordion-section-add_menu h3 {
 	text-align: right;
 }

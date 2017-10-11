@@ -1164,7 +1164,10 @@
 			var section = this,
 				container = section.container,
 				contentContainer = section.contentContainer,
-				updateNoticeVisibility;
+				navMenuSettingPattern = /^nav_menu\[/,
+				updateNoticeVisibility,
+				addChangeEventListener,
+				removeChangeEventListener;
 
 			/*
 			 * We have to manually handle section expanded because we do not
@@ -1186,22 +1189,35 @@
 			} );
 
 			function getNavMenuCount() {
-					var count = 0;
-					api.each( function( setting ) {
-							if ( /^nav_menu\[/.test( setting.id ) && false !== setting.get() ) {
-									count += 1;
-							}
-					} );
-					return count;
+				var count = 0;
+				api.each( function( setting ) {
+					if ( navMenuSettingPattern.test( setting.id ) && false !== setting.get() ) {
+						count += 1;
+					}
+				} );
+				return count;
 			}
 
-			var updateNoticeVisibility = _.debounce( function() {
-				container.find( '.add-new-menu-notice' ).attr( 'aria-hidden', getNavMenuCount() > 0 );
+			updateNoticeVisibility = _.debounce( function() {
+				container.find( '.add-new-menu-notice' ).attr( 'hidden', getNavMenuCount() > 0 );
 			} );
-			api.bind( 'add', updateNoticeVisibility );
-			api.bind( 'change', updateNoticeVisibility );
-			api.bind( 'removed', updateNoticeVisibility );
-			api.bind( 'ready', updateNoticeVisibility );
+			addChangeEventListener = function ( setting ) {
+				if ( navMenuSettingPattern.test( setting.id ) ) {
+					setting.bind( updateNoticeVisibility );
+					updateNoticeVisibility();
+				}
+			};
+			removeChangeEventListener = function ( setting ) {
+				if ( navMenuSettingPattern.test( setting.id ) ) {
+					setting.unbind( updateNoticeVisibility );
+					updateNoticeVisibility();
+				}
+			};
+
+			api.each( addChangeEventListener );
+			api.bind( 'add', addChangeEventListener );
+			api.bind( 'removed', removeChangeEventListener );
+			updateNoticeVisibility();
 
 			api.Section.prototype.attachEvents.apply( this, arguments );
 		},
