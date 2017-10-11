@@ -1164,10 +1164,7 @@
 			var section = this,
 				container = section.container,
 				contentContainer = section.contentContainer,
-				navMenuSettingPattern = /^nav_menu\[/,
-				updateNoticeVisibility,
-				addChangeEventListener,
-				removeChangeEventListener;
+				navMenuSettingPattern = /^nav_menu\[/;
 
 			/*
 			 * We have to manually handle section expanded because we do not
@@ -1188,6 +1185,12 @@
 				event.preventDefault();
 			} );
 
+			/**
+			 * Get number of non-deleted nav menus.
+			 *
+			 * @since 4.9.0
+			 * @returns {number} Count.
+			 */
 			function getNavMenuCount() {
 				var count = 0;
 				api.each( function( setting ) {
@@ -1198,28 +1201,50 @@
 				return count;
 			}
 
-			updateNoticeVisibility = _.debounce( function() {
+			/**
+			 * Update visibility of notice to prompt users to create menus.
+			 *
+			 * @since 4.9.0
+			 * @returns {void}
+			 */
+			function updateNoticeVisibility() {
 				container.find( '.add-new-menu-notice' ).prop( 'hidden', getNavMenuCount() > 0 );
-			} );
-			addChangeEventListener = function ( setting ) {
+			}
+
+			/**
+			 * Handle setting addition.
+			 *
+			 * @since 4.9.0
+			 * @param {wp.customize.Setting} setting - Added setting.
+			 * @returns {void}
+			 */
+			function addChangeEventListener( setting ) {
 				if ( navMenuSettingPattern.test( setting.id ) ) {
 					setting.bind( updateNoticeVisibility );
 					updateNoticeVisibility();
 				}
-			};
-			removeChangeEventListener = function ( setting ) {
+			}
+
+			/**
+			 * Handle setting removal.
+			 *
+			 * @since 4.9.0
+			 * @param {wp.customize.Setting} setting - Removed setting.
+			 * @returns {void}
+			 */
+			function removeChangeEventListener( setting ) {
 				if ( navMenuSettingPattern.test( setting.id ) ) {
 					setting.unbind( updateNoticeVisibility );
 					updateNoticeVisibility();
 				}
-			};
+			}
 
 			api.each( addChangeEventListener );
 			api.bind( 'add', addChangeEventListener );
 			api.bind( 'removed', removeChangeEventListener );
 			updateNoticeVisibility();
 
-			api.Section.prototype.attachEvents.apply( this, arguments );
+			api.Section.prototype.attachEvents.apply( section, arguments );
 		},
 
 		/**
