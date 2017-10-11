@@ -219,6 +219,10 @@
 	vertical-align: top;
 }
 
+.menu-location-settings .new-menu-locations-widget-note {
+	display: block;
+}
+
 .customize-control-menu {
 	margin-top: 4px;
 }

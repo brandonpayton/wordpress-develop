@@ -44,7 +44,7 @@ class WP_Customize_Nav_Menu_Locations_Control extends WP_Customize_Control {
 					<# if ( data.isCreating ) { #>
 						<p>
 							<?php echo _x( 'Where do you want this menu to appear?', 'menu locations' ); ?>
-							<em>
+							<em class="new-menu-locations-widget-note">
 								<?php
 								printf(
 									/* translators: %s: Codex URL */
